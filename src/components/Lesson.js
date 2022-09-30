@@ -3,36 +3,51 @@ import React from 'react';
 class Lesson extends React.Component {
   constructor(props) {
     super(props);
-    // stateの初期値を定義してください
-    this.state={isModalOpen: false}
-    
-  };
-  render() {
-    return (
-      <div className='lesson-card'>
-        <div className='lesson-item'>
+    this.state = {isModalOpen: false};
+  }
 
-          <p>{this.props.name}</p>
-          
-          <img src={this.props.image} />
-          
-        </div>
+  handleClickLesson() {
+    this.setState({isModalOpen: true});
+  }
+  
+  // handleClickCloseメソッドを定義してください
+  handleClickClose() {
+    this.setState({isModalOpen: false});
+  }
+
+  render() {
+    let modal;
+    if (this.state.isModalOpen) {
+      modal = (
         <div className='modal'>
           <div className='modal-inner'>
             <div className='modal-header'></div>
             <div className='modal-introduction'>
-              {/* レッスンの名前を表示してください */}
               <h2>{this.props.name}</h2>
-              
-              {/* レッスンの紹介文を表示してください */}
               <p>{this.props.introduction}</p>
-              
             </div>
-            <button className='modal-close-btn'>
+            {/* onClickイベントを追加してください */}
+            <button
+              className='modal-close-btn'
+              onClick={() => {this.handleClickClose()}}
+            >
               とじる
             </button>
           </div>
         </div>
+      );
+    }
+
+    return (
+      <div className='lesson-card'>
+        <div
+          className='lesson-item'
+          onClick={() => {this.handleClickLesson()}}
+        >
+          <p>{this.props.name}</p>
+          <img src={this.props.image} />
+        </div>
+        {modal}
       </div>
     );
   }
