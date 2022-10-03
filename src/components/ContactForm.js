@@ -4,13 +4,32 @@ class ContactForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isSubmitted: false
+      isSubmitted: false,
+      email: '',
+      hasEmailError: false,
     };
   }
 
-  render() {
-    let contactForm;
+  handleEmailChange(event) {
+    const inputValue = event.target.value;
+    this.setState({email: inputValue});
+  }
 
+  handleSubmit() {
+    this.setState({isSubmitted: true});
+  }
+
+  render() {
+    let emailErrorText;
+    if (this.state.hasEmailError) {
+      emailErrorText = (
+        <p className='contact-message-error'>
+          メールアドレスを入力してください
+        </p>
+      );
+    }
+
+    let contactForm;
     if (this.state.isSubmitted) {
       contactForm = (
         <div className='contact-submit-message'>
@@ -19,9 +38,14 @@ class ContactForm extends React.Component {
       );
     } else {
       contactForm = (
-        <form>
+        <form onSubmit={() =>{this.handleSubmit()}}>
           <p>メールアドレス（必須）</p>
-          <input />
+          <input
+            value={this.state.email}
+            onChange={(event) => {this.handleEmailChange(event)}}
+          />
+          {emailErrorText}
+
           <p>お問い合わせ内容（必須）</p>
           <textarea />
           <input
